@@ -199,6 +199,10 @@ class Escpos
 			$this->printer->setJustification(Printer::JUSTIFY_CENTER);
 			$this->printer->text($data->text->footer);
 		}
+		
+		if (isset($data->text->qr) && !empty($data->text->qr)) {
+			$this->printer->qrCode($data->text->qr);
+		}
 
 		$this->printer->feed(2);
 		$this->printer->cut();
