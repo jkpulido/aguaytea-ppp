@@ -172,13 +172,16 @@ class Escpos
 		}
 
 		$this->printer->setJustification(Printer::JUSTIFY_CENTER);
-		$this->printer->setEmphasis(true);
-		$this->printer->setTextSize(2, 2);
-		$this->printer->text($data->text->store_name);
-		$this->printer->setEmphasis(false);
+		if (isset($data->text->store_name) && !empty($data->text->store_name)) {
+			$this->printer->setEmphasis(true);
+			$this->printer->setTextSize(1, 2);
+			$this->printer->text($data->text->store_name);
+			$this->printer->setEmphasis(false);
+			$this->printer->feed(1);
+		}
 
 		$this->printer->setTextSize(1, 1);
-		$this->printer->feed();
+		// $this->printer->feed();
 		$this->printer->text($data->text->header);
 		$this->printer->setJustification(Printer::JUSTIFY_LEFT);
 		$this->printer->text($data->text->info);
@@ -192,7 +195,7 @@ class Escpos
 		if (isset($data->text->payments) && !empty($data->text->payments)) {
 			$this->printer->text($this->drawLine());
 			$this->printer->text($data->text->payments);
-			$this->printer->feed(2);
+			// $this->printer->feed(1);
 		}
 
 		if (isset($data->text->footer) && !empty($data->text->footer)) {
@@ -204,7 +207,7 @@ class Escpos
 			$this->printer->qrCode($data->text->qr);
 		}
 
-		$this->printer->feed(2);
+		$this->printer->feed(1);
 		$this->printer->cut();
 
 		if (isset($data->cash_drawer) && !empty($data->cash_drawer)) {
